@@ -3,6 +3,7 @@ import moment from "moment";
 import nodemailer from "nodemailer";
 import User from "../Models/User.js";
 import { ApolloError } from "apollo-server-express";
+import dotenv from "dotenv";
 
 const resolvers = {
 	Query: {
@@ -60,8 +61,8 @@ const resolvers = {
 				port: 465,
 				secure: true,
 				auth: {
-					user: "apikey",
-					pass: "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",
+					user: process.env.MAIL_API_ID,
+					pass: process.env.MAIL_API_KEY,
 				},
 			});
 			if (!user) {
@@ -76,7 +77,7 @@ const resolvers = {
 				};
 				await transporter
 					.sendMail({
-						from: '"Alper Kartal 👻" <para.noreply@gmail.com>', // sender address
+						from: `${update.loginToken} is your token 👻 <para.noreply@gmail.com>`, // sender address
 						to: args.email, // list of receivers
 						subject: "Hello ✔", // Subject line
 						html: `<b>${update.loginToken}</b>`, // html body
